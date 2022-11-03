@@ -26,6 +26,7 @@ func (Provider) CaddyModule() caddy.ModuleInfo {
 func (p *Provider) Provision(ctx caddy.Context) error {
 	repl := caddy.NewReplacer()
 	p.Provider.AuthAPIToken = repl.ReplaceAll(p.Provider.AuthAPIToken, "")
+	p.Provider.TeamId = repl.ReplaceAll(p.Provider.TeamId, "")
 	return nil
 }
 
@@ -37,19 +38,34 @@ func (p *Provider) Provision(ctx caddy.Context) error {
 //
 func (p *Provider) UnmarshalCaddyfile(d *caddyfile.Dispenser) error {
 	for d.Next() {
-		if d.NextArg() {
-			p.Provider.AuthAPIToken = d.Val()
-		}
+		// if d.NextArg() {
+		// 	p.Provider.AuthAPIToken = d.Val()
+		// 	p.Provider.TeamId = d.Val()
+		// }
 		if d.NextArg() {
 			return d.ArgErr()
 		}
 		for nesting := d.Nesting(); d.NextBlock(nesting); {
 			switch d.Val() {
-			case "api_token":
+			case "auth_api_token":
 				if p.Provider.AuthAPIToken != "" {
 					return d.Err("API token already set")
 				}
+				if !d.NextArg() {
+					return d.ArgErr()
+				}
 				p.Provider.AuthAPIToken = d.Val()
+				if d.NextArg() {
+					return d.ArgErr()
+				}
+			case "team_id":
+				if p.Provider.TeamId != "" {
+					return d.Err("team ID already set")
+				}
+				if !d.NextArg() {
+					return d.ArgErr()
+				}
+				p.Provider.TeamId = d.Val()
 				if d.NextArg() {
 					return d.ArgErr()
 				}
@@ -60,6 +76,9 @@ func (p *Provider) UnmarshalCaddyfile(d *caddyfile.Dispenser) error {
 	}
 	if p.Provider.AuthAPIToken == "" {
 		return d.Err("missing API token")
+	}
+	if p.Provider.TeamId == "" {
+		return d.Err("missing team ID")
 	}
 	return nil
 }
