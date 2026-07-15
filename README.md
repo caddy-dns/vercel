@@ -19,7 +19,8 @@ To use this module for the ACME DNS challenge, [configure the ACME issuer in you
     "dns": {
       "provider": {
         "name": "vercel",
-        "api_token": "YOUR_VERCEL_AUTH_API_TOKEN"
+        "auth_api_token": "YOUR_VERCEL_AUTH_API_TOKEN",
+        "team_id": "YOUR_VERCEL_TEAM_ID"
       }
     }
   }
@@ -32,7 +33,10 @@ or with the Caddyfile:
 your.domain.com {
   respond "Hello World"	# replace with whatever config you need...
   tls {
-    dns vercel {env.YOUR_HETZNER_AUTH_API_TOKEN}
+    dns vercel {
+      auth_api_token {env.YOUR_VERCEL_AUTH_API_TOKEN}
+      team_id {env.YOUR_VERCEL_AUTH_API_TOKEN}
+      }
   }
 }
 ```
