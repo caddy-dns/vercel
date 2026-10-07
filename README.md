@@ -32,7 +32,7 @@ or with the Caddyfile:
 your.domain.com {
   respond "Hello World"	# replace with whatever config you need...
   tls {
-    dns vercel {env.YOUR_HETZNER_AUTH_API_TOKEN}
+    dns vercel {env.YOUR_VERCEL_AUTH_API_TOKEN}
   }
 }
 ```

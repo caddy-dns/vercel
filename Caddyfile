@@ -1,0 +1,18 @@
+{
+    # Let's Encrypt / ZeroSSL Email
+    # email admin@your-domain.com
+}
+
+# Test Configuration
+localhost:8080 {
+    respond "Caddy With Vercel DNS Works" 200
+}
+
+# your-domain.com {
+#     tls {
+#         dns vercel {
+#             api_token "YOUR_VERCEL_BEARER_TOKEN"
+#         }
+#     }
+#     respond "Vercel SSL Certificate Correctly Released" 200
+# }
